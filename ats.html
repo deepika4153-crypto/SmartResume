@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartResume - ATS Checker</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 45px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #4f46e5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0 0 10px;
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .header p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .upload-area {
+            border: 2px dashed #c7d2fe;
+            background: #f8faff;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .upload-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .upload-area h2 {
+            margin: 0 0 8px;
+            font-size: 20px;
+            color: #111827;
+        }
+
+        .upload-area p {
+            margin: 0 0 20px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .choose-btn {
+            display: inline-block;
+            background: #4f46e5;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .choose-btn:hover {
+            background: #4338ca;
+        }
+
+        #resumeFile {
+            display: none;
+        }
+
+        #fileName {
+            margin-top: 15px;
+            color: #059669;
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 20px;
+        }
+
+        .check-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #059669;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .check-btn:hover {
+            background: #047857;
+        }
+
+        .result {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .score-box {
+            text-align: center;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .score {
+            font-size: 45px;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .score-text {
+            margin-top: 5px;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .result-section {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+        }
+
+        .result-section h3 {
+            margin-top: 0;
+            color: #4f46e5;
+        }
+
+        .result-section ul {
+            padding-left: 20px;
+        }
+
+        .result-section li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        @media(max-width: 700px) {
+
+            .navbar {
+                height: auto;
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="brand">
+        SmartResume
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('home') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('resume') }}">
+            Resume
+        </a>
+
+        <a href="{{ url_for('preview') }}">
+            Preview
+        </a>
+
+        <a href="{{ url_for('profile') }}">
+            Profile
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>
+            ATS Resume Checker
+        </h1>
+
+        <p>
+            Upload your resume and check its ATS compatibility.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+
+        <div class="upload-area">
+
+            <div class="upload-icon">
+                📄
+            </div>
+
+            <h2>
+                Upload Your Resume
+            </h2>
+
+            <p>
+                Supported formats: PDF, DOC, DOCX
+            </p>
+
+
+            <label for="resumeFile" class="choose-btn">
+                Choose Resume
+            </label>
+
+            <input
+                type="file"
+                id="resumeFile"
+                accept=".pdf,.doc,.docx">
+
+
+            <div id="fileName"></div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="check-btn"
+            onclick="checkATS()">
+
+            Check ATS Score
+
+        </button>
+
+
+        <div id="result" class="result">
+
+
+            <div class="score-box">
+
+                <div
+                    id="score"
+                    class="score">
+
+                    0%
+
+                </div>
+
+                <div class="score-text">
+
+                    ATS Compatibility Score
+
+                </div>
+
+            </div>
+
+
+            <div class="result-section">
+
+                <h3>
+                    Suggestions
+                </h3>
+
+                <ul>
+
+                    <li>
+                        Use clear section headings.
+                    </li>
+
+                    <li>
+                        Add relevant technical keywords.
+                    </li>
+
+                    <li>
+                        Keep your resume simple and professional.
+                    </li>
+
+                    <li>
+                        Avoid unnecessary graphics and tables.
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const fileInput =
+        document.getElementById("resumeFile");
+
+    const fileName =
+        document.getElementById("fileName");
+
+
+    fileInput.addEventListener(
+        "change",
+        function() {
+
+            if (this.files.length > 0) {
+
+                fileName.textContent =
+                    "Selected file: " +
+                    this.files[0].name;
+
+            } else {
+
+                fileName.textContent = "";
+
+            }
+
+        }
+    );
+
+
+    function checkATS() {
+
+        if (fileInput.files.length === 0) {
+
+            alert("Please choose your resume first.");
+
+            return;
+
+        }
+
+
+        const file =
+            fileInput.files[0];
+
+
+        const allowedTypes =
+            [
+                ".pdf",
+                ".doc",
+                ".docx"
+            ];
+
+
+        const fileNameLower =
+            file.name.toLowerCase();
+
+
+        const valid =
+            allowedTypes.some(
+                type => fileNameLower.endsWith(type)
+            );
+
+
+        if (!valid) {
+
+            alert(
+                "Please upload PDF, DOC or DOCX file."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "result"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "score"
+        ).textContent = "85%";
+
+
+        document.getElementById(
+            "result"
+        ).scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+</script>
+
+
+</body>
+</html>

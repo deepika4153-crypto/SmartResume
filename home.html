@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartResume - Dashboard</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        /* NAVBAR */
+
+        .professional-navbar {
+            height: 75px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 45px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .brand h2 {
+            font-size: 21px;
+            color: #111827;
+        }
+
+        .brand span {
+            display: block;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-menu a:hover {
+            color: #4f46e5;
+        }
+
+        .nav-menu .logout-link {
+            color: #dc2626;
+        }
+
+        /* MAIN */
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 50px 25px;
+        }
+
+        /* WELCOME */
+
+        .welcome-section {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            border-radius: 20px;
+            padding: 45px;
+            margin-bottom: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section h1 {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .welcome-section p {
+            font-size: 15px;
+            color: #e0e7ff;
+            max-width: 650px;
+            line-height: 1.7;
+        }
+
+        .welcome-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: white;
+            color: #4f46e5;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .welcome-button:hover {
+            background: #eef2ff;
+        }
+
+        /* CARDS */
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 28px;
+            transition: 0.2s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+            border-color: #c7d2fe;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            margin-bottom: 18px;
+        }
+
+        .dashboard-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .dashboard-card p {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: #4f46e5;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .card-link:hover {
+            color: #4338ca;
+        }
+
+        /* QUICK START */
+
+        .quick-section {
+            margin-top: 40px;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .quick-section h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .quick-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .quick-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .quick-item i {
+            font-size: 25px;
+            color: #4f46e5;
+            margin-bottom: 10px;
+        }
+
+        .quick-item h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .quick-item p {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* FOOTER */
+
+        .professional-footer {
+            text-align: center;
+            padding: 25px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 850px) {
+
+            .professional-navbar {
+                padding: 0 20px;
+            }
+
+            .nav-menu {
+                gap: 12px;
+            }
+
+            .nav-menu a {
+                font-size: 12px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-items {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .professional-navbar {
+                height: auto;
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .welcome-section {
+                padding: 30px 22px;
+            }
+
+            .welcome-section h1 {
+                font-size: 27px;
+            }
+
+            .dashboard-container {
+                padding: 30px 15px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="professional-navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="bi bi-file-earmark-person"></i>
+            </div>
+
+            <div>
+                <h2>SmartResume</h2>
+                <span>Resume Builder & ATS Checker</span>
+            </div>
+
+        </div>
+
+        <div class="nav-menu">
+
+            <a href="{{ url_for('home') }}">
+                <i class="bi bi-grid"></i>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('resume') }}">
+                <i class="bi bi-pencil-square"></i>
+                Create Resume
+            </a>
+
+            <a href="{{ url_for('ats') }}">
+                <i class="bi bi-bar-chart-line"></i>
+                ATS Checker
+            </a>
+
+            <a href="{{ url_for('preview') }}">
+                <i class="bi bi-eye"></i>
+                Preview
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                <i class="bi bi-person-circle"></i>
+                Profile
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="logout-link">
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- DASHBOARD -->
+
+    <main class="dashboard-container">
+
+        <section class="welcome-section">
+
+            <h1>
+                Welcome back, {{ session.get('user_name', 'User') }} 👋
+            </h1>
+
+            <p>
+                Create a professional resume, check your ATS compatibility,
+                and build a strong career profile with SmartResume.
+            </p>
+
+            <a href="{{ url_for('resume') }}" class="welcome-button">
+                <i class="bi bi-plus-circle"></i>
+                Create Resume
+            </a>
+
+        </section>
+
+
+        <h2 class="section-title">
+            What would you like to do?
+        </h2>
+
+
+        <section class="dashboard-grid">
+
+
+            <!-- CREATE RESUME -->
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+
+                <h3>
+                    Create Resume
+                </h3>
+
+                <p>
+                    Build a clean and professional resume
+                    using our easy-to-use resume builder.
+                </p>
+
+                <a href="{{ url_for('resume') }}" class="card-link">
+                    Create Resume
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+
+            </div>
+
+
+            <!-- ATS -->
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-bar-chart-line"></i>
+                </div>
+
+                <h3>
+                    ATS Checker
+                </h3>
+
+                <p>
+                    Upload your resume and check keywords
+                    and basic ATS compatibility.
+                </p>
+
+                <a href="{{ url_for('ats') }}" class="card-link">
+                    Check ATS Score
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+
+            </div>
+
+
+            <!-- PREVIEW -->
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-eye"></i>
+                </div>
+
+                <h3>
+                    Resume Preview
+                </h3>
+
+                <p>
+                    Preview your completed resume
+                    before downloading or printing it.
+                </p>
+
+                <a href="{{ url_for('preview') }}" class="card-link">
+                    View Preview
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+
+            </div>
+
+
+            <!-- PROFILE -->
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+
+                <h3>
+                    My Profile
+                </h3>
+
+                <p>
+                    View your account information and
+                    manage your SmartResume profile.
+                </p>
+
+                <a href="{{ url_for('profile') }}" class="card-link">
+                    View Profile
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUICK START -->
+
+        <section class="quick-section">
+
+            <h2>
+                Quick Start
+            </h2>
+
+            <div class="quick-items">
+
+                <div class="quick-item">
+
+                    <i class="bi bi-pencil-square"></i>
+
+                    <h4>
+                        1. Build
+                    </h4>
+
+                    <p>
+                        Enter your resume details.
+                    </p>
+
+                </div>
+
+
+                <div class="quick-item">
+
+                    <i class="bi bi-bar-chart"></i>
+
+                    <h4>
+                        2. Check
+                    </h4>
+
+                    <p>
+                        Check your ATS compatibility.
+                    </p>
+
+                </div>
+
+
+                <div class="quick-item">
+
+                    <i class="bi bi-download"></i>
+
+                    <h4>
+                        3. Download
+                    </h4>
+
+                    <p>
+                        Preview and download your resume.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="professional-footer">
+
+        © 2026 SmartResume. All Rights Reserved.
+
+    </footer>
+
+</body>
+</html>

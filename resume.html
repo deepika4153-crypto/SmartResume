@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartResume - Create Resume</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 45px;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #4f46e5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .heading p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4f46e5;
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #4f46e5;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .help {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .clear-btn {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .save-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .generate-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #d1d5db;
+        }
+
+        .save-btn:hover {
+            background: #059669;
+        }
+
+        .generate-btn:hover {
+            background: #4338ca;
+        }
+
+        @media(max-width: 700px) {
+
+            .navbar {
+                height: auto;
+                padding: 18px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-card {
+                padding: 22px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="brand">
+            SmartResume
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('home') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('resume') }}">
+                Resume
+            </a>
+
+            <a href="{{ url_for('ats') }}">
+                ATS Checker
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                Profile
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+        <div class="heading">
+
+            <h1>Create Your Professional Resume</h1>
+
+            <p>
+                Create a clean and professional resume suitable for a fresher.
+            </p>
+
+        </div>
+
+
+        <div class="form-card">
+
+            <form id="resumeForm">
+
+
+                <!-- PERSONAL INFORMATION -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        1. Personal Information
+                    </div>
+
+                    <div class="row">
+
+                        <div class="field">
+
+                            <label>
+                                Full Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                placeholder="N. Deepika"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                Professional Email *
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="deepika@gmail.com"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="field">
+
+                            <label>
+                                Phone Number *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                placeholder="9876543210"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                Location *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                placeholder="Neyveli, Tamil Nadu"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="field">
+
+                            <label>
+                                LinkedIn Profile
+                            </label>
+
+                            <input
+                                type="text"
+                                id="linkedin"
+                                placeholder="linkedin.com/in/yourname"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                GitHub Profile
+                            </label>
+
+                            <input
+                                type="text"
+                                id="github"
+                                placeholder="github.com/yourusername"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CAREER OBJECTIVE -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        2. Career Objective
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Career Objective *
+                        </label>
+
+                        <textarea
+                            id="objective"
+                            placeholder="To obtain an entry-level IT position where I can apply my technical knowledge, develop my programming skills, gain practical experience, and contribute to the growth of the organization."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EDUCATION -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        3. Education
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Education Details *
+                        </label>
+
+                        <textarea
+                            id="education"
+                            placeholder="B.Sc. Computer Science&#10;Vivekanandha Arts and Science College for Women&#10;2024 - 2027"
+                        ></textarea>
+
+                        <div class="help">
+                            Enter each detail on a new line.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TECHNICAL SKILLS -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        4. Technical Skills
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Technical Skills *
+                        </label>
+
+                        <textarea
+                            id="skills"
+                            placeholder="Programming Languages: Python, Java&#10;Web Technologies: HTML, CSS, JavaScript, Bootstrap&#10;Database: SQL, SQLite, MongoDB&#10;Framework: Flask&#10;Tools: Git, GitHub, VS Code"
+                        ></textarea>
+
+                        <div class="help">
+                            Use one category per line.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECTS -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        5. Projects
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Project Details *
+                        </label>
+
+                        <textarea
+                            id="projects"
+                            placeholder="SmartResume - Smart Resume Creator and ATS Resume Builder&#10;Developed a web-based application for creating professional resumes.&#10;Implemented resume preview and data storage using SQLite.&#10;Added ATS resume checking functionality.&#10;Technologies: HTML, CSS, Bootstrap, JavaScript, Python Flask, SQLite"
+                        ></textarea>
+
+                        <div class="help">
+                            First line = Project Title. Remaining lines = Project description.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CERTIFICATIONS -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        6. Certifications
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Certifications
+                        </label>
+
+                        <textarea
+                            id="certifications"
+                            placeholder="IBM SkillsBuild - Artificial Intelligence&#10;IBM SkillsBuild - Cloud Computing&#10;Salesforce Trailhead - Prompt Builder Basics"
+                        ></textarea>
+
+                        <div class="help">
+                            Enter each certification on a new line.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INTERNSHIP -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        7. Internship / Training
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Internship / Training
+                        </label>
+
+                        <textarea
+                            id="internship"
+                            placeholder="Python Programming Training&#10;MongoDB Training&#10;Web Development Training"
+                        ></textarea>
+
+                        <div class="help">
+                            Add this section only if you have relevant training or internship.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACHIEVEMENTS -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        8. Achievements
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Achievements
+                        </label>
+
+                        <textarea
+                            id="achievements"
+                            placeholder="Completed IBM SkillsBuild Artificial Intelligence course&#10;Participated in technical workshops"
+                        ></textarea>
+
+                        <div class="help">
+                            Add only genuine achievements.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LANGUAGES -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        9. Languages
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Languages Known
+                        </label>
+
+                        <textarea
+                            id="languages"
+                            placeholder="English&#10;Tamil"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="btn clear-btn"
+                        onclick="clearForm()">
+                        Clear
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="btn save-btn"
+                        onclick="saveResume()">
+                        Save Resume
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="btn generate-btn"
+                        onclick="generateResume()">
+                        Generate Resume
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
