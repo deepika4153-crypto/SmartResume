@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=".", static_folder=".")
 app.secret_key = "smartresume_secret_key"
 
 
@@ -393,8 +393,7 @@ def logout():
 # RUN APPLICATION
 # =========================
 
+init_db()
+
 if __name__ == "__main__":
-
-    init_db()
-
     app.run(debug=True)
